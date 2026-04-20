@@ -116,7 +116,7 @@ li a{
 .section1 .wallpaper {
     background-color: rgba(0, 0, 0, .2);
     background-blend-mode: multiply;
-    background-image: url("Imagenes/imagen.png");
+    background-image: url("Imagenes/imagen.jpg");
     background-size: cover;
     border-bottom: solid 4px #2828e9;
     height: 350px;
