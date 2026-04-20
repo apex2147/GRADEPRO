@@ -15,7 +15,7 @@ body{
 }
 
 header{
-    background-image: url("wallpaper.png");
+    background-image: url("Imagenes/wallpaper.png");
     background-size: cover;
     padding: .5em;
     border-bottom: solid 3px #DC143C;
@@ -116,7 +116,7 @@ li a{
 .section1 .wallpaper {
     background-color: rgba(0, 0, 0, .2);
     background-blend-mode: multiply;
-    background-image: url("imagen.jpg");
+    background-image: url("Imagenes/wallpaper.jpg");
     background-size: cover;
     border-bottom: solid 4px #2828e9;
     height: 350px;
@@ -151,7 +151,7 @@ p span{
 }
 
 .wallpaper .uanl{
-    background-image: url("uanl.svg");
+    background-image: url("Imagenes/uanl.svg");
     background-size: cover;
     width: 200px;
     height: 200px;
