@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GRADEPRO</title>
+        <link rel="stylesheet" href="subject.css">
+        <script src="https://kit.fontawesome.com/80e6568496.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header>
+            <h1 class="title"><a href="UserPage.html" class="title">GRADEPRO</a></h1>
+            <nav>
+                <div>
+                    <div></div>
+                    <span>Usuario</span>
+                </div>
+                <button>Cerrar Sesión</button>
+            </nav>
+        </header>
+        <!---------------MAIN--------------->
+        <main>
+            <section>
+                <div class="header">
+                    <h2>Inicio</h2>
+                    <form class="newHW" action="#">
+                        <input required class="nombre" type="text" placeholder="Actividad Fundamental #/AF#/PIA"><button class="guardar" id="addSubject" type="button"><i class="fa-solid fa-plus"></i></button>
+                    </form>
+                </div>
+                <div class="line"></div>
+                <div class="tareas">
+                    
+                </div>
+            </section>
+        </main>
+        <!---------------ARTICLE--------------->
+        <article>
+            <div class="calendario">
+                <div class="header">
+                    <div class="semestre"></div>
+                    <button id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="monthYear" id="monthYear"></div>
+                    <button id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="days">
+                    <div class="day">Dom</div>
+                    <div class="day">Lun</div>
+                    <div class="day">Mar</div>
+                    <div class="day">Mier</div>
+                    <div class="day">Jue</div>
+                    <div class="day">Vier</div>
+                    <div class="day">Sab</div>
+                </div>
+                <div class="dates" id="dates"></div>
+            </div>
+            <div class="to_do">
+                <div class="header">
+                    <h3>Tareas pendientes</h3>
+                    <button id="addTask" type="button"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <ul class="list">
+                </ul>
+            </div>
+        </article>
+        <!---------------ASIDE--------------->
+        <aside>
+            <div class="header">
+                <h2>Semestre</h2>
+            </div>
+            <div class="actual"></div>
+            <div class="line"></div>
+            <form class="newSubject" action="#">
+                <input required class="nombre" type="text" placeholder="Materia">
+                <button class="guardar" id="addSemester" type="button"><i class="fa-solid fa-plus"></i></button>
+            </form>
+            <div class="materias">
+                <div id="del_semestre" class="del_semestre">
+                </div>
+            </div>
+        </aside>
+        <footer>
+            <h4>GRADEPRO</h4>
+        </footer>
+        <div class="modal" id="modal">
+            <div class="modal-box">
+                <h3>¿Seguro que quieres borrar?</h3>
+                <p>Esta acción no se puede deshacer.</p>
+                <div class="modal-buttons">
+                    <button id="confirmDelete">Borrar</button>
+                    <button id="cancelDelete">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <script src="main.js"></script>
+    </body>
+</html>

@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+body{
+    background-color: #fffafa;
+    color: #fff;
+}
+
+header{
+    background-image: url("wallpaper.png");
+    background-size: cover;
+    padding: .5em;
+    border-bottom: solid 3px #DC143C;
+}
+
+.title{
+    color: #fff;
+    font-weight: 600;
+    margin-left: 20px;
+}
+
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+}
+
+.demo a{
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.2em;
+    padding: 15px 30px;
+    border-radius: 5px;
+    background-color: #c20c0c;
+    box-shadow: 3px 2px 6px #000;
+    text-shadow: 2px 2px 6px #000;
+}
+
+.demo a:hover{
+    color: #333333;
+    background-color: #EDC309;
+    text-shadow: none;
+}
+
+ul{
+    display: flex;
+    justify-content: center;
+}
+
+ul div{
+    display: flex;
+    align-items: center;
+}
+
+nav li{
+    margin: 20px;
+    padding: .5em;
+}
+
+li a{
+    color: #fff;
+    font-weight: 400;
+}
+
+.nav1 .inicio a{
+    padding: 10px 1em;
+    font-weight: 500;
+    color: rgb(255, 255, 255);
+    border-bottom: 2px solid #fff000;
+}
+
+.nav1 .nosotros a:hover{
+    color: rgb(216, 216, 216);
+}
+
+.nav2 li{
+    padding: 0;
+    margin: 0 2px;
+}
+
+.nav2 a{
+    padding: .8em 1.5em;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.registro{
+    background-color: red;
+}
+
+.sesion{
+    background-color: #EDC309;
+}
+
+.registro:hover, .sesion:hover{
+    color: #E6E6FA;
+}
+
+.registro:hover{
+    background-color: #c20c0c;
+}
+
+.sesion:hover{
+    background-color: darkgoldenrod;
+}
+
+.section1 .wallpaper {
+    background-color: rgba(0, 0, 0, .2);
+    background-blend-mode: multiply;
+    background-image: url("imagen.jpg");
+    background-size: cover;
+    border-bottom: solid 4px #2828e9;
+    height: 350px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-position: 33% 67%;
+}
+
+.text{
+    font-weight: 600;
+    font-size: 1.5em;
+    width: 500px;
+    height: 200px;
+    text-shadow: 2px 3px 3px black;
+    background-color: rgba(5,7,12,.5);
+    padding: .5em;
+    border-radius: 3px;
+}
+
+.text h2, .text p{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.5em;
+}
+
+p span{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.7em;
+    font-weight: 800;
+    color: #e20808;
+}
+
+.wallpaper .uanl{
+    background-image: url("uanl.svg");
+    background-size: cover;
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    box-shadow: 3px 2px 6px #000;
+}
+
+.bienvenida{
+    padding: 1em 1.5em;
+    font-weight: 500;
+}
+
+.bienvenida h2{
+    color: goldenrod;
+    text-align: center;
+    text-shadow: 1px 1px 3px #000;
+    font-family: 'Times New Roman', Times, serif;
+    padding-bottom: .5em;
+    font-size: 2em;
+}
+
+.introduccion{
+    display: flex;
+    justify-content: space-between;
+}
+
+.parte1{
+    display: flex;
+    flex-direction: column;
+    width: 49%;
+}
+
+.explicacion{
+    text-align: justify;
+    font-size: 1em;
+    background-color: #222121;
+    border-radius: 10px;
+    padding: 1em 2em;
+    box-shadow: 3px 3px 4px #000;
+    margin-bottom: 30px;
+}
+
+.explicacion h3{
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #EDC309;
+    font-weight: 600;
+}
+
+.explicacion p a{
+    color: #c20c0c;
+    text-decoration: underline;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px black;
+}
+
+.explicacion p a:hover{
+    color: #2828e9;
+}
+
+.gratis{
+    font-size: 1em;
+    background-color: #222121;
+    border-radius: 10px;
+    padding: 1em 2em;
+    box-shadow: 3px 3px 4px #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.gratis p{
+    margin-bottom: 20px;
+}
+
+.gratis h3{
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #EDC309;
+    font-weight: 600;
+}
+
+.gratis a{
+    text-align: center;
+}
+
+.gratis a i{
+    font-size: 1.2em;
+    color: #2828e9;
+    font-size: 2.5em;
+    padding: 10px 2em;
+    border-radius: 10px;
+    background-color: #EDC309;
+    box-shadow: 3px 3px 4px #000;
+    text-align: center;
+}
+
+.gratis a i:hover{
+    color: #EDC309;
+    background-color: #2828e9;
+}
+
+.parte2{
+    border-radius: 10px;
+    background-color: #222121;
+    padding: 15px;
+    box-shadow: 3px 3px 4px #000;
+    width: 49%;
+}
+
+.parte2 h3{
+    margin-bottom: 10px;
+    color: #EDC309;
+    font-weight: 600;
+}
+
+.funciones{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.funciones div{
+    padding: 8px 14px;
+    text-align: justify;
+    border-radius: 12px;
+    background-color: #333333;
+    margin: 5px;
+    font-size: .9em;
+    box-shadow: 1px 1px 3px black;
+    display: flex;
+    flex-direction: column;
+}
+
+.funciones div h4{
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #EDC309;
+}
+
+.funciones div i{
+    color: #EDC309;
+    font-size: 2.5em;
+    text-align: right;
+}
+
+.funciones .f5{
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+
+footer{
+    background-color: rgb(32, 32, 32);
+    height: 100px;
+}
