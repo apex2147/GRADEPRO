@@ -33,7 +33,7 @@ article{ grid-area: article; }
 footer{ grid-area: footer; }
 
 header{
-    background-image: url("Imagenes/imagen.jpg");
+    background-image: url("Imagenes/wallpaper.png");
     background-size: cover;
     border-bottom: solid 3px #DC143C;
     display: flex;
