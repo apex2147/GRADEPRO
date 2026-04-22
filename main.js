@@ -43,6 +43,141 @@ updateCalendar();
 //-------------STATE-------------
 let currentSemester = localStorage.getItem('currentSemester') || null;
 
+//-------------REMINDERS-------------
+let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+let selectedDate = null;
+
+const saveReminders = () => {
+    localStorage.setItem('reminders', JSON.stringify(reminders));
+}
+
+const formatDate = (dateStr) => {
+    const [year, month, day] = dateStr.split('-');
+    return `${day}-${month}-${year}`;
+}
+
+const updateSubjectDropdown = () => {
+    const select = document.getElementById('subjectSelect');
+    const subjects = JSON.parse(localStorage.getItem(`subjects_${currentSemester}`)) || [];
+    select.innerHTML = '<option value="">Seleccionar materia...</option>';
+    subjects.forEach(s => {
+        const option = document.createElement('option');
+        option.value = s.name;
+        option.textContent = s.name;
+        select.appendChild(option);
+    });
+}
+
+const renderReminders = () => {
+    const list = document.getElementById('remindersList');
+    list.innerHTML = '';
+    reminders.forEach((r, index) => {
+        list.innerHTML += `
+        <div class="reminder-item">
+            <div class="reminder-info">
+                <span class="reminder-subject">${r.subject || 'Sin materia'}</span>
+                <span class="reminder-name">${r.name}</span>
+                <span class="reminder-date">${formatDate(r.date)}</span>
+            </div>
+            <div class="reminder-actions">
+                <button class="editReminder" data-index="${index}"><i class="fa-solid fa-pen"></i></button>
+                <button class="deleteReminder" data-index="${index}"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>`;
+    });
+    updateCalendarDots();
+}
+
+const updateCalendarDots = () => {
+    document.querySelectorAll('.date').forEach(dateEl => {
+        dateEl.classList.remove('has-reminder');
+    });
+
+    const calYear = currentDate.getFullYear();
+    const calMonth = currentDate.getMonth();
+
+    reminders.forEach(r => {
+        const [year, month, day] = r.date.split('-').map(Number);
+        if (year === calYear && month - 1 === calMonth) {
+            document.querySelectorAll('.date:not(.inactive)').forEach(dateEl => {
+                if (parseInt(dateEl.textContent) === day) {
+                    dateEl.classList.add('has-reminder');
+                }
+            });
+        }
+    });
+}
+
+datesElement.addEventListener('click', (e) => {
+    const dateEl = e.target.closest('.date');
+    if (!dateEl || dateEl.classList.contains('inactive')) return;
+    const day = dateEl.textContent.trim().padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const year = currentDate.getFullYear();
+    selectedDate = `${year}-${month}-${day}`;
+    document.getElementById('selectedDateLabel').textContent = `${day}-${month}-${year}`;
+    document.getElementById('reminderInput').style.display = 'flex';
+    document.getElementById('hwName').focus();
+    updateSubjectDropdown();
+});
+
+document.getElementById('closeReminderInput').addEventListener('click', () => {
+    document.getElementById('reminderInput').style.display = 'none';
+    document.getElementById('hwName').value = '';
+    document.getElementById('subjectSelect').value = '';
+    selectedDate = null;
+});
+
+document.getElementById('saveReminder').addEventListener('click', () => {
+    const name = document.getElementById('hwName').value.trim();
+    const subject = document.getElementById('subjectSelect').value;
+    if (!name || !selectedDate) return;
+    reminders.push({ name, subject, date: selectedDate });
+    saveReminders();
+    renderReminders();
+    updateCalendarDots();
+    document.getElementById('hwName').value = '';
+    document.getElementById('subjectSelect').value = '';
+    document.getElementById('reminderInput').style.display = 'none';
+    selectedDate = null;
+});
+
+document.getElementById('remindersList').addEventListener('click', (e) => {
+    const index = e.target.closest('[data-index]')?.dataset.index;
+    if (e.target.closest('.deleteReminder')) {
+        reminders.splice(index, 1);
+        saveReminders();
+        renderReminders();
+        updateCalendarDots();
+    } else if (e.target.closest('.editReminder')) {
+        const r = reminders[index];
+        selectedDate = r.date;
+        const [year, month, day] = r.date.split('-');
+        document.getElementById('selectedDateLabel').textContent = `${day}-${month}-${year}`;
+        document.getElementById('hwName').value = r.name;
+        document.getElementById('reminderInput').style.display = 'flex';
+        updateSubjectDropdown();
+        document.getElementById('subjectSelect').value = r.subject;
+        reminders.splice(index, 1);
+        saveReminders();
+        renderReminders();
+        updateCalendarDots();
+    }
+});
+
+const originalUpdateCalendar = updateCalendar;
+const updateCalendarWithDots = () => {
+    originalUpdateCalendar();
+    updateCalendarDots();
+}
+prevBtn.addEventListener('click', updateCalendarDots);
+nextBtn.addEventListener('click', updateCalendarDots);
+
+renderReminders();
+updateCalendarDots();
+
+
+
 //-------------SEMESTRES-------------
 const cursados = document.getElementById('cursados');
 let semestres = 0;
@@ -163,7 +298,7 @@ const loadSubjects = () => {
         materiaCount++;
         materias.innerHTML += `
         <div class="m" id="m${materiaCount}" style="background-color: ${item.color || '#202020'}">
-            <a href="#">${item.name}</a>
+            <a href="subject.html">${item.name}</a>
             <div class="dropdown">
                 <button class="opciones"><i class="fa-solid fa-ellipsis"></i></button>
                 <div class="content">

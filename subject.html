@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>GRADEPRO</title>
         <link rel="stylesheet" href="subject.css">
+        <link rel="stylesheet" href="userpage.css">
         <script src="https://kit.fontawesome.com/80e6568496.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -37,7 +38,6 @@
         <article>
             <div class="calendario">
                 <div class="header">
-                    <div class="semestre"></div>
                     <button id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="monthYear" id="monthYear"></div>
                     <button id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
@@ -53,6 +53,23 @@
                 </div>
                 <div class="dates" id="dates"></div>
             </div>
+            <div class="reminder-input" id="reminderInput" style="display:none">
+                <div class="reminder-input-header">
+                    <span id="selectedDateLabel"></span>
+                    <button id="closeReminderInput"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <input type="text" id="hwName" placeholder="Nombre de la tarea..." class="nombre">
+                <select id="subjectSelect" class="nombre">
+                    <option value="">Seleccionar materia...</option>
+                </select>
+                <button id="saveReminder" class="guardar">Guardar</button>
+            </div>
+            <div class="reminders-panel">
+                <div class="reminders-header">
+                    <h3>Recordatorios</h3>
+                </div>
+                <div class="reminders-list" id="remindersList"></div>
+            </div>
             <div class="to_do">
                 <div class="header">
                     <h3>Tareas pendientes</h3>
@@ -61,7 +78,7 @@
                 <ul class="list">
                 </ul>
             </div>
-        </article>
+        </article>      
         <!---------------ASIDE--------------->
         <aside>
             <div class="header">
@@ -79,7 +96,22 @@
             </div>
         </aside>
         <footer>
-            <h4>GRADEPRO</h4>
+            <div class="footer-content">
+                <div class="footer-brand">
+                   <h4>GRADEPRO</h4>
+                   <p>Plataforma de gestión académica</p>
+                </div>
+                <div class="footer-legal">
+                   <a href="aviso-privacidad.html">Aviso de Privacidad</a>
+                  <a href="terminos.html">Términos y Condiciones</a>
+                   <a href="propiedad-intelectual.html">Propiedad Intelectual</a>
+                </div>
+                <div class="footer-copy">
+                    <p>© 2026 GRADEPRO. Todos los derechos reservados.</p>
+                    <p>Obra colectiva registrada ante el <strong>INDAUTOR</strong>. Imagen comercial protegida ante el <strong>IMPI</strong>.</p>
+                    <p>Desarrollado por el equipo GRADEPRO — Monterrey, Nuevo León, México</p>
+                </div>
+            </div>
         </footer>
         <div class="modal" id="modal">
             <div class="modal-box">
