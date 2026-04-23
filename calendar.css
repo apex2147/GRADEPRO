@@ -1,0 +1,107 @@
+/*----------ARTICLE----------*/
+article{
+    padding: 1.5em 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*----------CALENDARIO----------*/
+.calendario{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #202020;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    margin-bottom: 10px;
+}
+
+.calendario .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: #EDC309;
+}
+
+.monthYear{
+    text-align: center;
+    font-weight: 600;
+}
+
+.calendario .header button{
+    border: none;
+    border-radius: 50%;
+    background-color: #59636e;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
+    color: #fffafa;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+}
+
+.calendario .header button:hover{ background-color: #8f8f8f; }
+
+.days{
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+}
+
+.day{
+    text-align: center;
+    padding: 5px;
+    color: #59636e;
+    font-weight: 500;
+}
+
+.dates{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6,1fr);
+    height: 290px;
+    font-size: 1em;
+}
+
+.date{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+    margin: auto;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    transition: 200ms;
+}
+
+.date:hover, .date.active{
+    background-color: #EDC309;
+    color: #202020;
+}
+
+.date.inactive.active{
+    background-color: #EDC309;
+    color: #202020;
+    opacity: 0.5;
+}
+
+.date.inactive{ color: #333333; }
+
+.date.has-reminder{ position: relative; }
+
+.date.has-reminder::after{
+    content: '';
+    width: 5px;
+    height: 5px;
+    background-color: #DC143C;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 2px;
+}

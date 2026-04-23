@@ -1,167 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-/*----------SETTINGS----------*/
-*{
-    text-decoration: none;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Montserrat", sans-serif;
-}
-
-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-body{
-    background-color: #fffafa;
-    color: #fff;
-    display: grid;
-    grid-template-areas: 
-    "header header header header"
-    "sidemenu main main article"
-    "sidemenu footer footer footer"
-    ;
-}
-
-header{ grid-area: header; }
-aside{ grid-area: sidemenu; }
-main{ grid-area: main; }
-article{ grid-area: article; }
-footer{ grid-area: footer; }
-
-header{
-    background-image: url("Imagenes/wallpaper.png");
-    background-size: cover;
-    border-bottom: solid 3px #DC143C;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: .5em;
-}
-
-nav{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-nav .buscador{
-    background-color: #59636e;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    padding: 0px 6px;
-    width: max-content;
-    height: max-content;
-    align-items: center;
-    border: none;
-    transition: background-color 250ms;
-    box-sizing: border-box;
-}
-
-nav .buscador:focus-within{ background-color: #f1f1f1; }
-
-nav .buscador i{
-    color: #EDC309;
-    font-size: 1em;
-}
-
-nav .buscador input{
-    background: none;
-    border: none;
-    outline: none;
-    padding: 12px;
-    color: #000;
-    font-size: 1em;
-    font-weight: 500;
-}
-
-nav .buscador input::placeholder{ color: #8f8f8f; }
-
-.title{
-    color: #EDC309;
-    font-weight: 600;
-    margin-left: 20px;
-    font-size: 1.7em;
-}
-
-/*-------------------------ASIDE---------------------------------------*/
-aside{
-    width: 250px;
+/*----------MAIN----------*/
+main{
     background-color: #333333;
-    padding: 1.5em 1em;
+    margin: 10px 15px;
+    padding: 1em 1.5em;
+    width: 720px;
+    height: 800px;
+    border-radius: 10px;
 }
 
-aside .header{
+main .header{
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-top: 10px;
+    margin-bottom: 25px;
 }
 
-aside .header button{
-    border-radius: 50%;
-    font-size: 1.5em;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: #202020;
+main h2{
+    font-weight: 600;
     color: #EDC309;
-    box-shadow: 1px 1px 3px #202020;
+    font-size: 1.5em;
 }
 
-aside .header button:hover{
+main button{
+    padding: .7em;
+    border-radius: 5px;
+    background-color: #EDC309;
+    color: #fffafa;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+
+main button:hover{
     background-color: #EDC309;
     color: #202020;
 }
 
-.actual{
-    height: 1em;
-    width: max-content;
+main .header button i{
+    margin-left: 5px;
+    font-size: 1.3em;
 }
 
-.actual a{
-    color: #EDC309;
-    font-weight: 600;
-    font-size: 1.2em;
-}
-
-.actual a:hover{ text-decoration: underline; }
-
-.line{
-    height: 1px;
-    width: 100%;
+/*----------TAREAS----------*/
+.tareas .t{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #202020;
+    border-radius: 15px;
+    padding: 4px 8px;
+    height: 45px;
     margin-bottom: 10px;
-    background: #8f8f8f;
 }
 
-aside .actual, .semestres{
+.t a{
     width: 100%;
-    margin-bottom: 10px;
-    border-radius: 4px;
+    height: 100%;
+    padding: 4px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-weight: 500;
 }
 
-.materias .cursadas{
-    padding: 5px 3px;
-    border-radius: 5px;
-    height: auto;
-}
+.t a:hover{ text-decoration: underline; }
 
-.newSubject{
+.newHW{
     display: flex;
     justify-content: space-between;
     background-color: #59636e;
     border-radius: 8px;
     padding: 5px;
-    margin-bottom: 10px;
+    font-size: 1em;
     transition: background 250ms;
 }
 
-.newSubject .nombre{
+.newHW .nombre{
     width: 100%;
     border-radius: 5px;
     border: none;
@@ -170,13 +87,10 @@ aside .actual, .semestres{
     padding: 0px 6px;
 }
 
-.newSubject .nombre::placeholder{ color: #8f8f8f; }
-.newSubject:focus-within{ background-color: #f1f1f1; }
+.newHW .nombre::placeholder{ color: #8f8f8f; }
+.newHW:focus-within{ background-color: #f1f1f1; }
 
-.newSubject .guardar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.newHW .guardar{
     border-radius: 10px;
     padding: 8px;
     border: none;
@@ -185,61 +99,49 @@ aside .actual, .semestres{
     color: #EDC309;
     background-color: #333333;
     box-shadow: 0 0 4px rgba(0, 0, 0, .2);
-    width: 2em;
+    width: 2.3em;
 }
 
-.newSubject .guardar:hover{
+.newHW .guardar:hover{
     background-color: #EDC309;
     color: #202020;
 }
 
-footer{
-    background-color: #202020;
-    height: auto;
-    padding: 20px 40px;
-}
-
-.footer-content{
+/*----------SUBJECT ASIDE----------*/
+.del_semestre .container{
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
+    align-items: center;
+    background-color: #202020;
+    padding: 8px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    height: 2.8em;
 }
 
-.footer-brand h4{
+/*----------BACK BUTTON----------*/
+.backBtn{
     color: #EDC309;
     font-size: 1.2em;
-    font-weight: 600;
-    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+    background-color: #202020;
+    transition: background 200ms;
 }
 
-.footer-brand p{
-    color: #8f8f8f;
-    font-size: 0.8em;
+.backBtn:hover{
+    background-color: #EDC309;
+    color: #202020;
 }
 
-.footer-legal{
+/*----------ARTICLE----------*/
+article{
+    padding: 1.5em 1em;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-}
-
-.footer-legal a{
-    color: #8f8f8f;
-    font-size: 0.8em;
-    transition: color 200ms;
-}
-
-.footer-legal a:hover{
-    color: #EDC309;
-}
-
-.footer-copy{
-    text-align: right;
-}
-
-.footer-copy p{
-    color: #8f8f8f;
-    font-size: 0.75em;
-    margin-bottom: 4px;
+    align-items: center;
 }

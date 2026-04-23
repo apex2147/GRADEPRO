@@ -1,307 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-/*----------SETTINGS----------*/
-*{
-    text-decoration: none;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Montserrat", sans-serif;
-}
-
-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-body{
-    background-color: #fffafa;
-    color: #fff;
-    display: grid;
-    grid-template-areas: 
-    "header header header header"
-    "sidemenu main main article"
-    "sidemenu footer footer footer"
-    ;
-}
-
-header{ grid-area: header; }
-aside{ grid-area: sidemenu; }
-main{ grid-area: main; }
-article{ grid-area: article; }
-footer{ grid-area: footer; }
-
-header{
-    background-image: url("Imagenes/wallpaper.png");
-    background-size: cover;
-    border-bottom: solid 3px #DC143C;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: .5em;
-}
-
-nav{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-.title{
-    color: #EDC309;
-    font-weight: 600;
-    margin-left: 20px;
-    font-size: 1.7em;
-}
-
-/*-------------------------ASIDE---------------------------------------*/
-aside{
-    background-color: #333333;
-    padding: 1.5em 1em;
-}
-
-aside .header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-aside .header button{
-    border-radius: 50%;
-    font-size: 1.5em;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: #202020;
-    color: #EDC309;
-    box-shadow: 1px 1px 3px #202020;
-}
-
-aside .header button:hover{
-    background-color: #EDC309;
-    color: #202020;
-}
-
-.actual{
-    height: 1em;
-    width: max-content;
-}
-
-.actual a{
-    color: #EDC309;
-    font-weight: 600;
-    font-size: 1.2em;
-}
-
-.actual a:hover{ text-decoration: underline; }
-
-.line{
-    height: 1px;
-    width: 100%;
-    margin-bottom: 10px;
-    background: #8f8f8f;
-}
-
-aside .actual, .semestres{
-    width: 100%;
-    margin-bottom: 10px;
-    border-radius: 4px;
-}
-
-.semestres .cursados{
-    padding: 5px 3px;
-    border-radius: 5px;
-    height: auto;
-}
-
-.newSemester{
-    display: flex;
-    justify-content: space-between;
-    background-color: #59636e;
-    border-radius: 8px;
-    padding: 5px;
-    margin-bottom: 10px;
-    transition: background 250ms;
-}
-
-.newSemester .nombre{
-    width: 100%;
-    border-radius: 5px;
-    border: none;
-    background: none;
-    outline: none;
-    padding: 0px 6px;
-}
-
-.newSemester .nombre::placeholder{ color: #8f8f8f; }
-.newSemester:focus-within{ background-color: #f1f1f1; }
-
-.newSemester .guardar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    padding: 8px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    color: #EDC309;
-    background-color: #333333;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
-    width: 2em;
-}
-
-.newSemester .guardar:hover{
-    background-color: #EDC309;
-    color: #202020;
-}
-
-/*----------DROPDOWN----------*/
-.dropdown{ position: relative; }
-
-.content{
-    display: none;
-    position: absolute;
-    z-index: 9999;
-    right: 0;
-    margin-top: 3px;
-    width: max-content;
-    background-color: #333333;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-    border-radius: 5px;
-}
-
-.content button{
-    display: flex;
-    justify-content: flex-start;
-    padding: 5px 9px;
-    background: none;
-    border: none;
-    color: #fff;
-    width: 100%;
-}
-
-.content button:hover{
-    background-color: #8f8f8f;
-}
-
-.content button span{
-    margin-left: 10px;
-}
-
-/*----------SEMESTRES----------*/
-
-.container a, .container .nombre {
-    font-size: 1em;
-}
-
-.m a, .m .nombre {
-    font-size: 1em;
-}
-
-.cursados .container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #202020;
-    padding: 8px 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    height: 2.8em;
-}
-
-.container a{
-    color: #fff;
-    font-weight: 500;
-    width: 100%;
-}
-
-.container a:hover{
-    text-decoration: underline;
-}
-
-.container .opciones, .m .opciones{
-    border: none;
-    border-radius: 50%;
-    padding: 5px;
-    font-size: 1.2em;
-    color: #EDC309;
-    background-color: #333333;
-    cursor: pointer;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    text-align: left;
-}
-
-.container .opciones:hover, .m .opciones:hover{
-    background-color: #59636e;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 99999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal.open { display: flex; }
-
-.modal-box {
-    background-color: #202020;
-    border-radius: 10px;
-    padding: 20px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.modal-box h3 { color: #EDC309; }
-.modal-box p { color: #8f8f8f; font-size: 0.9em; }
-
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-#confirmDelete {
-    background-color: #DC143C;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-#cancelDelete {
-    background-color: #59636e;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
 /*----------MAIN----------*/
 main{
     background-color: #333333;
     margin: 10px 15px;
     padding: 1em 1.5em;
     width: 720px;
+    height: 800px;
     border-radius: 10px;
 }
 
@@ -311,7 +14,6 @@ main .header{
     align-items: center;
     margin-top: 10px;
     margin-bottom: 25px;
-    gap: 10px;
 }
 
 main h2{
@@ -341,50 +43,6 @@ main .header button i{
     font-size: 1.3em;
 }
 
-.container .nombre, .m .nombre {
-    background-color: #59636e;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 8px;
-    color: #fff;
-    outline: none;
-    width: 100%;
-}
-
-.container .nombre:focus, .m .nombre:focus {
-    background-color: #f1f1f1;
-    color: #000;
-}
-
-.guardar{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #EDC309;
-    background-color: #333333;
-    border: none;
-    outline: none;
-    padding: 3px;
-    margin-left: 5px;
-    height: 2em;
-    width: 2em;
-    border-radius:5px;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
-    color: #EDC309;
-}
-
-#confirm:hover{
-    background-color: #228B22;
-    color: #EDC309;
-}
-
-#cancel:hover{
-    background-color: #DC143C;
-    color: #EDC309;
-}
-
 /*----------MATERIAS----------*/
 .materias .m{
     display: flex;
@@ -408,399 +66,76 @@ main .header button i{
     font-weight: 500;
 }
 
-.m a:hover{
-    text-decoration: underline;
-}
+.m a:hover{ text-decoration: underline; }
 
 .newSubject{
     width: 450px;
     display: none;
-    justify-content: space-between;
-    background-color: #59636e;
-    border-radius: 8px;
-    padding: 5px;
-    font-size: 1em;
-    transition: background 250ms;
-}
-
-.newSubject .nombre{
-    width: 100%;
-    border-radius: 5px;
-    border: none;
-    background: none;
-    outline: none;
-    padding: 0px 6px;
-}
-
-.newSubject .nombre::placeholder{
-    color: #8f8f8f; 
-}
-.newSubject:focus-within{
-    background-color: #f1f1f1;
-}
-
-.newSubject .guardar{
-    border-radius: 10px;
-    padding: 8px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    color: #EDC309;
-    background-color: #333333;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
-    width: 2.3em;
-    font-style: normal;
-}
-
-.newSubject .guardar i{
-    margin: 0;
-}
-
-.newSubject .guardar:hover{
-    background-color: #EDC309;
-    color: #202020;
-}
-
-/*----------ARTICLE----------*/
-article{
-    padding: 1.5em 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/*----------CALENDARIO----------*/
-.calendario{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    background-color: #202020;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-    margin-bottom: 10px;
-}
-
-.calendario .header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    color: #EDC309;
-}
-
-.monthYear{
-    text-align: center;
-    font-weight: 600;
-}
-
-.calendario .header button{
-    border: none;
-    border-radius: 50%;
-    background-color: #59636e;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    font-size: 1em;
-    color: #fffafa;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
-}
-
-.calendario .header button:hover{ background-color: #8f8f8f; }
-
-.days{
-    display: grid;
-    grid-template-columns: repeat(7,1fr);
-}
-
-.day{
-    text-align: center;
-    padding: 5px;
-    color: #59636e;
-    font-weight: 500;
-}
-
-.dates{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6,1fr);
-    height: 290px;
     font-size: 1em;
 }
 
-.date{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 5px;
-    margin: auto;
-    cursor: pointer;
-    font-weight: 600;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    transition: 200ms;
-}
+/*----------SEMESTRES----------*/
+.container a, .container .nombre{ font-size: 1em; }
+.m a, .m .nombre{ font-size: 1em; }
 
-.date:hover, .date.active{
-    background-color: #EDC309;
-    color: #202020;
-}
-
-.date.inactive.active{
-    background-color: #EDC309;
-    color: #202020;
-    opacity: 0.5;
-}
-
-.date.inactive{ color: #333333; }
-
-/*----------TO DO----------*/
-.to_do{
-    background-color: #202020;
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.to_do .header{
+.cursados .container{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 8px;
-}
-
-.to_do .header h3{
-    color: #EDC309;
-    text-align: center;
-    margin-bottom: 5px;
-}
-
-.to_do .header button{
-    border-radius: 50%;
-    font-size: 1.5em;
-    padding: 8px;
-    background-color: #333333;
-    border: none;
-    cursor: pointer;
-    color: #EDC309;
-    box-shadow: 1px 1px 3px #202020;
-}
-
-.to_do .header button:hover{
-    background-color: #EDC309;
-    color: #202020;
-}
-
-.to_do .list{
-    width: 100%;
-    height: 150px;
-    background-color: #333333;
-    border-radius: 8px;
-}
-
-.reminder-input {
     background-color: #202020;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.reminder-input-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #EDC309;
-    font-weight: 600;
-    font-size: 0.9em;
-}
-
-.reminder-input-header button {
-    background: none;
-    border: none;
-    color: #8f8f8f;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.reminder-input-header button:hover {
-    color: #DC143C;
-}
-
-.reminder-input select.nombre {
-    cursor: pointer;
-    color: #fff;
-}
-
-.reminder-input select.nombre option {
-    background-color: #202020;
-}
-
-.reminder-input .guardar {
-    background-color: #333333;
-    color: #EDC309;
-    border: none;
-    border-radius: 5px;
-    padding: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    width: 100%;
-}
-
-.reminder-input .guardar:hover {
-    background-color: #EDC309;
-    color: #202020;
-}
-
-.reminders-panel {
-    background-color: #202020;
-    border-radius: 10px;
-    padding: 10px;
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-bottom: 10px;
-}
-
-.reminders-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    margin-bottom: 5px;
-}
-
-.reminders-header h3 {
-    color: #EDC309;
-    font-weight: 600;
-}
-
-.reminders-list {
-    height: 150px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 5px;
-}
-
-.reminder-item {
-    background-color: #333333;
-    border-radius: 8px;
     padding: 8px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85em;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    height: 2.8em;
 }
 
-.reminder-item .reminder-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.reminder-item .reminder-subject {
-    color: #EDC309;
-    font-weight: 600;
-    font-size: 0.8em;
-}
-
-.reminder-item .reminder-name {
+.container a{
     color: #fff;
     font-weight: 500;
+    width: 100%;
 }
 
-.reminder-item .reminder-date {
-    color: #8f8f8f;
-    font-size: 0.75em;
-}
+.container a:hover{ text-decoration: underline; }
 
-.reminder-item .reminder-actions {
-    display: flex;
-    gap: 5px;
-}
-
-.reminder-item .reminder-actions button {
-    background: none;
+.container .nombre, .m .nombre{
+    background-color: #59636e;
     border: none;
-    cursor: pointer;
-    color: #8f8f8f;
-    font-size: 0.9em;
+    border-radius: 5px;
+    padding: 5px 8px;
+    color: #fff;
+    outline: none;
+    width: 100%;
+}
+
+.container .nombre:focus, .m .nombre:focus{
+    background-color: #f1f1f1;
+    color: #000;
+}
+
+.guardar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #EDC309;
+    background-color: #333333;
+    border: none;
+    outline: none;
     padding: 3px;
-}
-
-.reminder-item .reminder-actions button:hover {
-    color: #EDC309;
-}
-
-.date.has-reminder {
-    position: relative;
-}
-
-.date.has-reminder::after {
-    content: '';
-    width: 5px;
-    height: 5px;
-    background-color: #DC143C;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 2px;
-}
-
-footer{
-    background-color: #202020;
-    height: auto;
-    padding: 20px 40px;
-}
-
-.footer-content{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-.footer-brand h4{
-    color: #EDC309;
-    font-size: 1.2em;
+    margin-left: 5px;
+    height: 2em;
+    width: 2em;
+    border-radius: 5px;
+    cursor: pointer;
     font-weight: 600;
-    margin-bottom: 5px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
 }
 
-.footer-brand p{
-    color: #8f8f8f;
-    font-size: 0.8em;
-}
+#confirm:hover{ background-color: #228B22; color: #EDC309; }
+#cancel:hover{ background-color: #DC143C; color: #EDC309; }
 
-.footer-legal{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.footer-legal a{
-    color: #8f8f8f;
-    font-size: 0.8em;
-    transition: color 200ms;
-}
-
-.footer-legal a:hover{
-    color: #EDC309;
-}
-
-.footer-copy{
-    text-align: right;
-}
-
-.footer-copy p{
-    color: #8f8f8f;
-    font-size: 0.75em;
-    margin-bottom: 4px;
+.semestres .cursados{
+    padding: 5px 3px;
+    border-radius: 5px;
+    height: auto;
 }

@@ -4,6 +4,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>GRADEPRO</title>
+        <link rel="stylesheet" href="global.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="aside.css">
+        <link rel="stylesheet" href="dropdown.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="modal.css">
+        <link rel="stylesheet" href="calendar.css">
+        <link rel="stylesheet" href="reminders.css">
         <link rel="stylesheet" href="userpage.css">
         <script src="https://kit.fontawesome.com/80e6568496.js" crossorigin="anonymous"></script>
     </head>
@@ -50,12 +58,13 @@
                 </div>
                 <div class="dates" id="dates"></div>
             </div>
-                        <div class="reminder-input" id="reminderInput" style="display:none">
+            <div class="reminder-input" id="reminderInput">
                 <div class="reminder-input-header">
                     <span id="selectedDateLabel"></span>
                     <button id="closeReminderInput"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <input type="text" id="hwName" placeholder="Nombre de la tarea..." class="nombre">
+                <input type="date" id="dateInput" class="nombre">
                 <select id="subjectSelect" class="nombre">
                     <option value="">Seleccionar materia...</option>
                 </select>
@@ -64,6 +73,7 @@
             <div class="reminders-panel">
                 <div class="reminders-header">
                     <h3>Recordatorios</h3>
+                    <button id="addReminderBtn"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <div class="reminders-list" id="remindersList"></div>
             </div>

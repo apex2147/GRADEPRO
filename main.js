@@ -43,7 +43,13 @@ updateCalendar();
 //-------------STATE-------------
 let currentSemester = localStorage.getItem('currentSemester') || null;
 
-//-------------REMINDERS-------------
+//-------------SEMESTER NAME-------------
+const semesterNameEl = document.getElementById('semesterName');
+if (semesterNameEl) {
+    semesterNameEl.textContent = currentSemester || '';
+}
+
+//-------------REMINDERS - DATA-------------
 let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
 let selectedDate = null;
 
@@ -56,6 +62,7 @@ const formatDate = (dateStr) => {
     return `${day}-${month}-${year}`;
 }
 
+//-------------REMINDERS - DROPDOWN-------------
 const updateSubjectDropdown = () => {
     const select = document.getElementById('subjectSelect');
     const subjects = JSON.parse(localStorage.getItem(`subjects_${currentSemester}`)) || [];
@@ -68,6 +75,7 @@ const updateSubjectDropdown = () => {
     });
 }
 
+//-------------REMINDERS - RENDER-------------
 const renderReminders = () => {
     const list = document.getElementById('remindersList');
     list.innerHTML = '';
@@ -88,6 +96,7 @@ const renderReminders = () => {
     updateCalendarDots();
 }
 
+//-------------REMINDERS - DOTS-------------
 const updateCalendarDots = () => {
     document.querySelectorAll('.date').forEach(dateEl => {
         dateEl.classList.remove('has-reminder');
@@ -108,6 +117,7 @@ const updateCalendarDots = () => {
     });
 }
 
+//-------------REMINDERS - CALENDAR CLICK-------------
 datesElement.addEventListener('click', (e) => {
     const dateEl = e.target.closest('.date');
     if (!dateEl || dateEl.classList.contains('inactive')) return;
@@ -116,32 +126,52 @@ datesElement.addEventListener('click', (e) => {
     const year = currentDate.getFullYear();
     selectedDate = `${year}-${month}-${day}`;
     document.getElementById('selectedDateLabel').textContent = `${day}-${month}-${year}`;
-    document.getElementById('reminderInput').style.display = 'flex';
+    document.getElementById('dateInput').value = `${year}-${month}-${day}`;
+    document.getElementById('reminderInput').classList.add('open');
     document.getElementById('hwName').focus();
     updateSubjectDropdown();
 });
 
-document.getElementById('closeReminderInput').addEventListener('click', () => {
-    document.getElementById('reminderInput').style.display = 'none';
+//-------------REMINDERS - ADD BUTTON-------------
+document.getElementById('addReminderBtn').addEventListener('click', () => {
+    selectedDate = null;
+    document.getElementById('selectedDateLabel').textContent = '';
     document.getElementById('hwName').value = '';
     document.getElementById('subjectSelect').value = '';
+    document.getElementById('dateInput').value = '';
+    document.getElementById('reminderInput').classList.add('open');
+    document.getElementById('hwName').focus();
+    updateSubjectDropdown();
+});
+
+//-------------REMINDERS - CLOSE-------------
+document.getElementById('closeReminderInput').addEventListener('click', () => {
+    document.getElementById('reminderInput').classList.remove('open');
+    document.getElementById('hwName').value = '';
+    document.getElementById('subjectSelect').value = '';
+    document.getElementById('dateInput').value = '';
     selectedDate = null;
 });
 
+//-------------REMINDERS - SAVE-------------
 document.getElementById('saveReminder').addEventListener('click', () => {
     const name = document.getElementById('hwName').value.trim();
     const subject = document.getElementById('subjectSelect').value;
-    if (!name || !selectedDate) return;
-    reminders.push({ name, subject, date: selectedDate });
+    const dateInputVal = document.getElementById('dateInput').value;
+    const date = selectedDate || dateInputVal;
+    if (!name || !date) return;
+    reminders.push({ name, subject, date });
     saveReminders();
     renderReminders();
     updateCalendarDots();
     document.getElementById('hwName').value = '';
     document.getElementById('subjectSelect').value = '';
-    document.getElementById('reminderInput').style.display = 'none';
+    document.getElementById('dateInput').value = '';
+    document.getElementById('reminderInput').classList.remove('open');
     selectedDate = null;
 });
 
+//-------------REMINDERS - EDIT & DELETE-------------
 document.getElementById('remindersList').addEventListener('click', (e) => {
     const index = e.target.closest('[data-index]')?.dataset.index;
     if (e.target.closest('.deleteReminder')) {
@@ -155,7 +185,8 @@ document.getElementById('remindersList').addEventListener('click', (e) => {
         const [year, month, day] = r.date.split('-');
         document.getElementById('selectedDateLabel').textContent = `${day}-${month}-${year}`;
         document.getElementById('hwName').value = r.name;
-        document.getElementById('reminderInput').style.display = 'flex';
+        document.getElementById('dateInput').value = r.date;
+        document.getElementById('reminderInput').classList.add('open');
         updateSubjectDropdown();
         document.getElementById('subjectSelect').value = r.subject;
         reminders.splice(index, 1);
@@ -165,18 +196,11 @@ document.getElementById('remindersList').addEventListener('click', (e) => {
     }
 });
 
-const originalUpdateCalendar = updateCalendar;
-const updateCalendarWithDots = () => {
-    originalUpdateCalendar();
-    updateCalendarDots();
-}
+//-------------REMINDERS - INIT-------------
 prevBtn.addEventListener('click', updateCalendarDots);
 nextBtn.addEventListener('click', updateCalendarDots);
-
 renderReminders();
 updateCalendarDots();
-
-
 
 //-------------SEMESTRES-------------
 const cursados = document.getElementById('cursados');

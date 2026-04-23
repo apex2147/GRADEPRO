@@ -1,0 +1,43 @@
+.dropdown{ position: relative; }
+
+.content{
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    right: 0;
+    margin-top: 3px;
+    width: max-content;
+    background-color: #333333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    border-radius: 5px;
+}
+
+.content button{
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px 9px;
+    background: none;
+    border: none;
+    color: #fff;
+    width: 100%;
+}
+
+.content button:hover{ background-color: #8f8f8f; }
+
+.content button span{ margin-left: 10px; }
+
+.container .opciones, .m .opciones{
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 1.2em;
+    color: #EDC309;
+    background-color: #333333;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.container .opciones:hover, .m .opciones:hover{ background-color: #59636e; }
