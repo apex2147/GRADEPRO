@@ -20,3 +20,20 @@ nav{
     margin-left: 20px;
     font-size: 1.7em;
 }
+
+.cerrarSesion{
+    color: #202020;
+    background-color: #EDC309;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 50px;
+    transition: 100ms background-color;
+}
+
+.cerrarSesion:hover{
+    background-color: #d3ae06;
+}

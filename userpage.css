@@ -131,6 +131,11 @@ main .header button i{
     box-shadow: 0 0 4px rgba(0, 0, 0, .2);
 }
 
+.guardar i{
+    position: relative;
+    right: 2px;
+}
+
 #confirm:hover{ background-color: #228B22; color: #EDC309; }
 #cancel:hover{ background-color: #DC143C; color: #EDC309; }
 
