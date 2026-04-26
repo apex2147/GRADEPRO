@@ -51,3 +51,15 @@
     cursor: pointer;
     font-weight: 600;
 }
+
+.goal-warning-needed {
+    color: #8f8f8f;
+    font-size: 14px;
+    line-height: 2;
+    margin-top: 6px;
+}
+
+.goal-warning-needed strong {
+    color: #EDC309;
+    font-weight: 600;
+}

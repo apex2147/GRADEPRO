@@ -62,10 +62,14 @@
                     <span id="selectedDateLabel"></span>
                     <button id="closeReminderInput"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <input type="text" id="hwName" placeholder="Nombre de la tarea..." class="nombre">
+                <div class="reminder-type-toggle">
+                    <button class="reminder-type-btn active" data-type="libre">Libre</button>
+                    <button class="reminder-type-btn" data-type="actividad">Actividad</button>
+                </div>
+                <input type="text" id="hwName" placeholder="Descripción..." class="nombre">
                 <input type="date" id="dateInput" class="nombre">
-                <select id="subjectSelect" class="nombre">
-                    <option value="">Seleccionar materia...</option>
+                <select id="subjectSelect" class="nombre" style="display:none">
+                    <option value="">Seleccionar actividad...</option>
                 </select>
                 <button id="saveReminder" class="guardar">Guardar</button>
             </div>
@@ -83,14 +87,13 @@
                 <a href="UserPage.html" class="backBtn"><i class="fa-solid fa-arrow-left"></i></a>
                 <div class="actual" id="semesterName"></div>
             </div>
+            <div class="actual" id="currentSubjectDisplay"></div>
             <div class="line"></div>
             <form class="newSubject" action="#">
-                <input required class="nombre" type="text" placeholder="Materia">
-                <button class="guardar" id="addSemester" type="button"><i class="fa-solid fa-plus"></i></button>
+                <input class="nombre" type="text" id="newSubjectInput" placeholder="Nueva materia...">
+                <button class="guardar" id="addSubjectBtn" type="button"><i class="fa-solid fa-plus"></i></button>
             </form>
-            <div class="materias">
-                
-            </div>
+            <div class="del_semestre" id="del_semestre"></div>
         </aside>
         <footer>
             <div class="footer-content">
@@ -117,6 +120,15 @@
                 <div class="modal-buttons">
                     <button id="confirmDelete">Borrar</button>
                     <button id="cancelDelete">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="goalWarningModal">
+            <div class="modal-box">
+                <h3>Materia en peligro</h3>
+                <p class="goal-warning-needed" id="goalWarningText"></p>
+                <div class="modal-buttons">
+                    <button id="closeGoalWarning">Entendido</button>
                 </div>
             </div>
         </div>

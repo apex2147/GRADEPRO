@@ -1,11 +1,30 @@
 /*----------ARTICLE----------*/
-article{
+article {
     padding: 1.5em 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: calc(100vh - 80px);
+    overflow-x: hidden;
 }
 
+.reminders-panel {
+    background-color: #202020;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+.reminders-list {
+    height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+}
 /*----------CALENDARIO----------*/
 .calendario{
     width: 100%;

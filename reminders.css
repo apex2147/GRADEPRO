@@ -37,7 +37,7 @@
     font-size: 1em;
 }
 
-.reminder-input-header button:hover { color: #DC143C; }
+.reminder-input-header button:hover { color: #EDC309; }
 
 .reminder-input select.nombre {
     cursor: pointer;

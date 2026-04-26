@@ -1,4 +1,4 @@
-header{
+header {
     background-image: url("Imagenes/wallpaper.png");
     background-size: cover;
     border-bottom: solid 3px #DC143C;
@@ -8,32 +8,34 @@ header{
     padding: .5em;
 }
 
-nav{
+nav {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 12px;
 }
 
-.title{
-    color: #EDC309;
+.title {
+    color: #F5C518;
     font-weight: 600;
     margin-left: 20px;
     font-size: 1.7em;
 }
 
-.cerrarSesion{
-    color: #202020;
-    background-color: #EDC309;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.cerrarSesion {
+    color: #0d0d0d;
+    background-color: #F5C518;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
     font-weight: 600;
     border: none;
-    padding: 8px 10px;
+    padding: 8px 14px;
     border-radius: 5px;
     cursor: pointer;
-    margin: 0 50px;
-    transition: 100ms background-color;
+    margin: 0 20px;
+    transition: background 150ms;
 }
 
-.cerrarSesion:hover{
-    background-color: #d3ae06;
+.cerrarSesion:hover {
+    background-color: #d4aa10;
+    color: #0d0d0d;
 }

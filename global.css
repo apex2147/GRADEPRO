@@ -15,10 +15,11 @@ button {
     justify-content: center;
 }
 
-body{
-    background-color: #fffafa;
+body {
+    background-color: #fff;
     color: #fff;
     display: grid;
+    grid-template-columns: 300px 1fr 1fr 400px;
     grid-template-areas: 
     "header header header header"
     "sidemenu main main article"
@@ -31,3 +32,4 @@ aside{ grid-area: sidemenu; }
 main{ grid-area: main; }
 article{ grid-area: article; }
 footer{ grid-area: footer; }
+

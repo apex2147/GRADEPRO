@@ -1,9 +1,10 @@
-aside{
-    background-color: #333333;
+aside {
+    background-color: rgba(22,22,22,0.95);
+    border-right: 1px solid rgba(255,255,255,0.05);
     padding: 1.5em 1em;
 }
 
-aside .header{
+aside .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -11,91 +12,105 @@ aside .header{
     margin-bottom: 8px;
 }
 
-aside .header button{
+aside .header button {
     border-radius: 50%;
     font-size: 1.5em;
     padding: 10px;
     border: none;
     cursor: pointer;
-    background-color: #202020;
-    color: #EDC309;
-    box-shadow: 1px 1px 3px #202020;
+    background-color: rgba(245,197,24,0.1);
+    color: #F5C518;
+    box-shadow: none;
 }
 
-aside .header button:hover{
-    background-color: #EDC309;
-    color: #202020;
+.header a{
+    margin: 0 10px;
 }
 
-.actual{
-    height: 1em;
-    width: max-content;
+aside .header button:hover {
+    background-color: #F5C518;
+    color: #0d0d0d;
 }
 
-.actual a{
-    color: #EDC309;
-    font-weight: 600;
-    font-size: 1.2em;
+.actual {
+    height: auto;
+    width: 100%;
+    overflow: visible;
 }
-
-.actual a:hover{ text-decoration: underline; }
 
 #semesterName{
-    font-size: 2em;
-    font-weight: 600;
+    margin: 0;
 }
 
-.line{
+.actual a {
+    color: #F5C518;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.actual a:hover { text-decoration: underline; }
+
+#semesterName {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #F5C518;
+}
+
+.line {
     height: 1px;
     width: 100%;
     margin-bottom: 10px;
-    background: #8f8f8f;
+    background: rgba(255,255,255,0.08);
 }
 
-aside .actual, .semestres{
+aside .actual, .semestres {
     width: 100%;
     margin-bottom: 10px;
     border-radius: 4px;
 }
 
-.newSubject, .newSemester{
+.newSubject, .newSemester {
     display: flex;
     justify-content: space-between;
-    background-color: #59636e;
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 8px;
     padding: 5px;
     margin-bottom: 10px;
     transition: background 250ms;
 }
 
-.newSubject .nombre, .newSemester .nombre{
+.newSubject .nombre, .newSemester .nombre {
     width: 100%;
     border-radius: 5px;
     border: none;
     background: none;
     outline: none;
     padding: 0px 6px;
+    color: #fff;
 }
 
-.newSubject .nombre::placeholder, .newSemester .nombre::placeholder{ color: #8f8f8f; }
-.newSubject:focus-within, .newSemester:focus-within{ background-color: #f1f1f1; }
+.newSubject .nombre::placeholder, .newSemester .nombre::placeholder { color: #555; }
+.newSubject:focus-within, .newSemester:focus-within {
+    background-color: rgba(245,197,24,0.06);
+    border-color: rgba(245,197,24,0.2);
+}
 
-.newSubject .guardar, .newSemester .guardar{
+.newSubject .guardar, .newSemester .guardar {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 8px;
     border: none;
     font-weight: 600;
     cursor: pointer;
-    color: #EDC309;
-    background-color: #333333;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+    color: #F5C518;
+    background-color: rgba(245,197,24,0.1);
     width: 2em;
 }
 
-.newSubject .guardar:hover, .newSemester .guardar:hover{
-    background-color: #EDC309;
-    color: #202020;
+.newSubject .guardar:hover, .newSemester .guardar:hover {
+    background-color: #F5C518;
+    color: #0d0d0d;
 }

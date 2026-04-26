@@ -1,3 +1,7 @@
+function navigateTo(url) {
+    window.location.href = url;
+}
+
 //-------------CALENDARIO-------------
 const monthYeartElement = document.getElementById('monthYear');
 const datesElement = document.getElementById('dates');
@@ -141,6 +145,11 @@ document.getElementById('addReminderBtn').addEventListener('click', () => {
     document.getElementById('dateInput').value = '';
     document.getElementById('reminderInput').classList.add('open');
     document.getElementById('hwName').focus();
+    reminderType = 'libre';
+    document.querySelectorAll('.reminder-type-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.reminder-type-btn[data-type="libre"]').classList.add('active');
+    document.getElementById('subjectSelect').style.display = 'none';
+    document.getElementById('hwName').placeholder = 'Descripción...';
     updateSubjectDropdown();
 });
 
@@ -222,7 +231,14 @@ const updateActual = () => {
     const priority = document.querySelector('.container.priority');
     document.querySelectorAll('.container').forEach(c => c.style.display = 'flex');
     if (priority) {
-        actual.innerHTML = `<a href="#" class="actualLink">${priority.querySelector('a').textContent}</a>`;
+        actual.innerHTML = `
+        <div class="actual-semester">
+            <a href="#" class="actualLink">${priority.querySelector('a').textContent}</a>
+            <div class="actual-actions">
+                <button class="guardar renameSemesterActual" title="Renombrar"><i class="fa-solid fa-pen"></i></button>
+                <button class="guardar borrarSemesterActual" title="Borrar"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>`;
         priority.style.display = 'none';
     } else {
         actual.innerHTML = '';
@@ -322,13 +338,10 @@ const loadSubjects = () => {
         materiaCount++;
         materias.innerHTML += `
         <div class="m" id="m${materiaCount}" style="background-color: ${item.color || '#202020'}">
-            <a href="subject.html">${item.name}</a>
-            <div class="dropdown">
-                <button class="opciones"><i class="fa-solid fa-ellipsis"></i></button>
-                <div class="content">
-                    <button class="renameMateria"><i class="fa-solid fa-pen"></i><span>Renombrar</span></button>
-                    <button class="borrarMateria"><i class="fa-solid fa-trash"></i><span>Borrar</span></button>
-                </div>
+            <a href="#" class="subjectLink">${item.name}</a>
+            <div class="subject-actions">
+                <button class="renameMateria guardar" title="Renombrar"><i class="fa-solid fa-pen"></i></button>
+                <button class="borrarMateria guardar" title="Borrar"><i class="fa-solid fa-trash"></i></button>
             </div>
         </div>`;
     });
@@ -340,13 +353,10 @@ const addSubject = () => {
     const newValue = inputMateria.value.trim();
     materias.innerHTML += `
     <div class="m" id="m${materiaCount}">
-        <a href="subject.html">${newValue}</a>
-        <div class="dropdown">
-            <button class="opciones"><i class="fa-solid fa-ellipsis"></i></button>
-            <div class="content">
-                <button class="renameMateria"><i class="fa-solid fa-pen"></i><span>Renombrar</span></button>
-                <button class="borrarMateria"><i class="fa-solid fa-trash"></i><span>Borrar</span></button>
-            </div>
+        <a href="#" class="subjectLink">${newValue}</a>
+        <div class="subject-actions">
+            <button class="renameMateria guardar" title="Renombrar"><i class="fa-solid fa-pen"></i></button>
+            <button class="borrarMateria guardar" title="Borrar"><i class="fa-solid fa-trash"></i></button>
         </div>
     </div>`;
     inputMateria.value = '';
@@ -403,6 +413,12 @@ document.addEventListener('click', (e) => {
         e.preventDefault();
         const name = e.target.closest('.semesterLink').textContent;
         loadSemesterView(name);
+    } else if (e.target.closest('.subjectLink')) {
+        e.preventDefault();
+        const name = e.target.closest('.subjectLink').textContent;
+        localStorage.setItem('currentSubject', name);
+        localStorage.setItem('currentSemester', currentSemester);
+        navigateTo('subject.html');
     } else if (e.target.closest('.actualLink')) {
         e.preventDefault();
         const name = e.target.closest('.actualLink').textContent;
@@ -518,6 +534,38 @@ document.addEventListener('click', (e) => {
         cancelBtn.addEventListener('click', (e) => { e.stopPropagation(); cancelRename(); });
         inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); confirmRename(); } if (e.key === 'Escape') { cancelRename(); } });
 
+        } else if (e.target.closest('.renameSemesterActual')) {
+    const link = actual.querySelector('.actualLink');
+    const currentName = link.textContent;
+    const container = document.querySelector('.container.priority');
+    const containerLink = container?.querySelector('a');
+    const newName = prompt('Nuevo nombre para el semestre:', currentName)?.trim();
+    if (!newName || newName === currentName) return;
+    if (containerLink) containerLink.textContent = newName;
+    localStorage.setItem('currentSemester', newName);
+    const semData = JSON.parse(localStorage.getItem(`subjects_${currentName}`));
+    if (semData) {
+        localStorage.setItem(`subjects_${newName}`, JSON.stringify(semData));
+        localStorage.removeItem(`subjects_${currentName}`);
+    }
+    currentSemester = newName;
+    saveSemesters();
+    updateActual();
+    loadSubjects();
+    renderSemesterGoalStatus?.();
+    renderSemesterWarning?.();
+
+} else if (e.target.closest('.borrarSemesterActual')) {
+    const container = document.querySelector('.container.priority');
+    showModal(() => {
+        if (container) container.remove();
+        actual.innerHTML = '';
+        currentSemester = null;
+        localStorage.removeItem('currentSemester');
+        saveSemesters();
+        updateActual();
+        resetView();
+    });
     } else {
         document.querySelectorAll('.content').forEach(d => d.style.display = 'none');
     }

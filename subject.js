@@ -1,3 +1,6 @@
+function navigateTo(url) {
+    window.location.href = url;
+}
 //-------------CALENDARIO-------------
 const monthYeartElement = document.getElementById('monthYear');
 const datesElement = document.getElementById('dates');
@@ -50,43 +53,21 @@ const saveReminders = () => localStorage.setItem('reminders', JSON.stringify(rem
 
 const formatDate = (dateStr) => {
     const [year, month, day] = dateStr.split('-');
-    return `${day}-${month}-${year}`;
+    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
 }
-
 const updateAssignmentDropdown = () => {
     const select = document.getElementById('subjectSelect');
     const data = getSubjectData();
     select.innerHTML = '<option value="">Seleccionar actividad...</option>';
-    data.assignments.filter(a => a.weight > 0).forEach(a => {
-        const option = document.createElement('option');
-        option.value = a.name;
-        option.textContent = `${a.name} (${a.weight}%)`;
-        select.appendChild(option);
-    });
-    const freeOpt = document.createElement('option');
-    freeOpt.value = 'libre';
-    freeOpt.textContent = 'Recordatorio libre';
-    select.appendChild(freeOpt);
-}
-
-const renderReminders = () => {
-    const list = document.getElementById('remindersList');
-    list.innerHTML = '';
-    reminders.forEach((r, index) => {
-        list.innerHTML += `
-        <div class="reminder-item">
-            <div class="reminder-info">
-                <span class="reminder-subject">${r.subject || 'Libre'}</span>
-                <span class="reminder-name">${r.name}</span>
-                <span class="reminder-date">${formatDate(r.date)}</span>
-            </div>
-            <div class="reminder-actions">
-                <button class="editReminder" data-index="${index}"><i class="fa-solid fa-pen"></i></button>
-                <button class="deleteReminder" data-index="${index}"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        </div>`;
-    });
-    updateCalendarDots();
+    data.assignments
+        .filter(a => a.weight > 0 && !(a.sent) && (a.score === null || a.score === ''))
+        .forEach(a => {
+            const option = document.createElement('option');
+            option.value = a.name;
+            option.textContent = `${a.name} (${a.weight}%)`;
+            select.appendChild(option);
+        });
 }
 
 const updateCalendarDots = () => {
@@ -103,6 +84,52 @@ const updateCalendarDots = () => {
     });
 }
 
+const renderReminders = () => {
+    const list = document.getElementById('remindersList');
+    list.innerHTML = '';
+    [...reminders]
+        .map((r, index) => ({ ...r, originalIndex: index }))
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .forEach((r) => {
+            const index = r.originalIndex;
+            const isActivity = r.type === 'actividad';
+            list.innerHTML += `
+            <div class="reminder-item">
+                <div class="reminder-info">
+                    <span class="reminder-subject">${isActivity ? r.subjectName : r.name}</span>
+                    ${isActivity ? `<span class="reminder-name">${r.subject}</span>` : ''}
+                    <span class="reminder-date">${formatDate(r.date)}</span>
+                </div>
+                <div class="reminder-actions">
+                    <button class="editReminder" data-index="${index}"><i class="fa-solid fa-pen"></i></button>
+                    <button class="deleteReminder" data-index="${index}"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>`;
+        });
+    updateCalendarDots();
+}
+
+//-------------REMINDER TYPE TOGGLE-------------
+let reminderType = 'libre';
+
+document.querySelectorAll('.reminder-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.reminder-type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        reminderType = btn.dataset.type;
+        const select = document.getElementById('subjectSelect');
+        if (reminderType === 'actividad') {
+            select.style.display = 'block';
+            document.getElementById('hwName').placeholder = 'Nota opcional...';
+            updateAssignmentDropdown();
+        } else {
+            select.style.display = 'none';
+            select.value = '';
+            document.getElementById('hwName').placeholder = 'Descripción...';
+        }
+    });
+});
+
 datesElement.addEventListener('click', (e) => {
     const dateEl = e.target.closest('.date');
     if (!dateEl || dateEl.classList.contains('inactive')) return;
@@ -110,11 +137,19 @@ datesElement.addEventListener('click', (e) => {
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const year = currentDate.getFullYear();
     selectedDate = `${year}-${month}-${day}`;
-    document.getElementById('selectedDateLabel').textContent = `${day}-${month}-${year}`;
+    document.getElementById('selectedDateLabel').textContent = `${parseInt(day)} ${['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][currentDate.getMonth()]} ${year}`;
     document.getElementById('dateInput').value = `${year}-${month}-${day}`;
-    document.getElementById('reminderInput').classList.add('open');
-    document.getElementById('hwName').focus();
-    updateAssignmentDropdown();
+
+    const isOpen = document.getElementById('reminderInput').classList.contains('open');
+    if (!isOpen) {
+        document.getElementById('reminderInput').classList.add('open');
+        document.getElementById('hwName').focus();
+        reminderType = 'libre';
+        document.querySelectorAll('.reminder-type-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.reminder-type-btn[data-type="libre"]').classList.add('active');
+        document.getElementById('subjectSelect').style.display = 'none';
+        document.getElementById('hwName').placeholder = 'Descripción...';
+    }
 });
 
 document.getElementById('addReminderBtn')?.addEventListener('click', () => {
@@ -125,7 +160,11 @@ document.getElementById('addReminderBtn')?.addEventListener('click', () => {
     document.getElementById('dateInput').value = '';
     document.getElementById('reminderInput').classList.add('open');
     document.getElementById('hwName').focus();
-    updateAssignmentDropdown();
+    reminderType = 'libre';
+    document.querySelectorAll('.reminder-type-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.reminder-type-btn[data-type="libre"]').classList.add('active');
+    document.getElementById('subjectSelect').style.display = 'none';
+    document.getElementById('hwName').placeholder = 'Descripción...';
 });
 
 document.getElementById('closeReminderInput').addEventListener('click', () => {
@@ -137,12 +176,14 @@ document.getElementById('closeReminderInput').addEventListener('click', () => {
 });
 
 document.getElementById('saveReminder').addEventListener('click', () => {
-    const name = document.getElementById('hwName').value.trim();
-    const subject = document.getElementById('subjectSelect').value;
+    const name     = document.getElementById('hwName').value.trim();
     const dateInputVal = document.getElementById('dateInput').value;
-    const date = selectedDate || dateInputVal;
-    if (!name || !date) return;
-    reminders.push({ name, subject, date });
+    const date     = selectedDate || dateInputVal;
+    const subject  = document.getElementById('subjectSelect').value;
+    if (!date) return;
+    if (reminderType === 'libre' && !name) return;
+    if (reminderType === 'actividad' && !subject) return;
+    reminders.push({ name, subject, date, type: reminderType, subjectName: currentSubject });
     saveReminders();
     renderReminders();
     document.getElementById('hwName').value = '';
@@ -199,29 +240,114 @@ document.getElementById('cancelDelete').addEventListener('click', (e) => {
     deleteCallback = null;
 });
 
+document.getElementById('closeGoalWarning')?.addEventListener('click', () => {
+    document.getElementById('goalWarningModal').classList.remove('open');
+});
+
 //-------------ASIDE-------------
 const semNameEl = document.getElementById('semesterName');
 if (semNameEl) semNameEl.textContent = currentSemester || '';
 
-const delSemDiv = document.getElementById('del_semestre');
-if (delSemDiv) {
+const renderAside = () => {
+    const delSemDiv = document.getElementById('del_semestre');
+    const currentSubjectDisplay = document.getElementById('currentSubjectDisplay');
+    if (!delSemDiv) return;
+
+    // Show active subject above the line, same style as .actual in userpage
+    if (currentSubjectDisplay) {
+        currentSubjectDisplay.innerHTML = `<a href="#" class="actualLink">${currentSubject}</a>`;
+    }
+
     const subjects = JSON.parse(localStorage.getItem(`subjects_${currentSemester}`)) || [];
     delSemDiv.innerHTML = '';
-    subjects.forEach(s => {
-        const isActive = s.name === currentSubject;
+
+    subjects.forEach((s, idx) => {
+        if (s.name === currentSubject) return;
         delSemDiv.insertAdjacentHTML('beforeend', `
-        <div class="container${isActive ? ' active-subject' : ''}" style="background-color:${s.color || '#202020'}">
-            <a href="subject.html" class="subjectLink" data-name="${s.name}">${s.name}</a>
+        <div class="container" style="background-color:${s.color || '#202020'}" data-idx="${idx}">
+            <a href="#" class="subjectLink" data-name="${s.name}">${s.name}</a>
+            <div class="aside-actions">
+                <button class="aside-rename-btn guardar" data-idx="${idx}" title="Renombrar"><i class="fa-solid fa-pen"></i></button>
+                <button class="aside-delete-btn guardar" data-idx="${idx}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            </div>
         </div>`);
     });
-    delSemDiv.addEventListener('click', (e) => {
-        const link = e.target.closest('.subjectLink');
-        if (!link) return;
+};
+
+// Navigate to subject
+document.getElementById('del_semestre').addEventListener('click', (e) => {
+    // Navigate
+    const link = e.target.closest('.subjectLink');
+    if (link) {
         e.preventDefault();
         localStorage.setItem('currentSubject', link.dataset.name);
-        window.location.href = 'subject.html';
-    });
-}
+        navigateTo('subject.html');
+        return;
+    }
+
+    const idx = parseInt(e.target.closest('[data-idx]')?.dataset.idx);
+    if (isNaN(idx)) return;
+    const subjects = JSON.parse(localStorage.getItem(`subjects_${currentSemester}`)) || [];
+
+    // Rename
+    if (e.target.closest('.aside-rename-btn')) {
+        const oldName = subjects[idx].name;
+        const newName = prompt('Nuevo nombre para la materia:', oldName)?.trim();
+        if (!newName || newName === oldName) return;
+        // Rename subjectData key
+        const oldKey = `subjectData_${currentSemester}_${oldName}`;
+        const newKey = `subjectData_${currentSemester}_${newName}`;
+        const oldData = localStorage.getItem(oldKey);
+        if (oldData) { localStorage.setItem(newKey, oldData); localStorage.removeItem(oldKey); }
+        subjects[idx].name = newName;
+        localStorage.setItem(`subjects_${currentSemester}`, JSON.stringify(subjects));
+        // Update currentSubject if it was the active one
+        if (oldName === currentSubject) localStorage.setItem('currentSubject', newName);
+        navigateTo('subject.html');
+        return;
+    }
+
+    // Delete
+    if (e.target.closest('.aside-delete-btn')) {
+        showModal(() => {
+            const name = subjects[idx].name;
+            localStorage.removeItem(`subjectData_${currentSemester}_${name}`);
+            subjects.splice(idx, 1);
+            localStorage.setItem(`subjects_${currentSemester}`, JSON.stringify(subjects));
+            // If deleted subject was active, go to first remaining or back
+            if (name === currentSubject) {
+                if (subjects.length > 0) {
+                    localStorage.setItem('currentSubject', subjects[0].name);
+                    navigateTo('subject.html');
+                } else {
+                    navigateTo('UserPage.html');
+                }
+            } else {
+                renderAside();
+            }
+        });
+        return;
+    }
+});
+
+// Add new subject
+document.getElementById('addSubjectBtn').addEventListener('click', () => {
+    const input = document.getElementById('newSubjectInput');
+    const name = input.value.trim();
+    if (!name) return;
+    const subjects = JSON.parse(localStorage.getItem(`subjects_${currentSemester}`)) || [];
+    if (subjects.find(s => s.name === name)) { alert('Ya existe una materia con ese nombre.'); return; }
+    subjects.push({ name, color: '#202020' });
+    localStorage.setItem(`subjects_${currentSemester}`, JSON.stringify(subjects));
+    input.value = '';
+    renderAside();
+});
+
+document.getElementById('newSubjectInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('addSubjectBtn').click(); }
+});
+
+renderAside();
 
 //-------------SUBJECT DATA-------------
 const DEFAULT_EXAMS = [
@@ -249,17 +375,18 @@ const mainTitle     = document.querySelector('main h2');
 //-------------SUBJECT + SEMESTER NAME IN MAIN-------------
 if (mainTitle) mainTitle.textContent = currentSubject || 'Materia';
 
-const semesterSubLine = document.createElement('div');
-semesterSubLine.className = 'subject-semester-line';
-semesterSubLine.innerHTML = `<span class="subject-sem-label">${currentSemester}</span>`;
-sectionHeader.after(semesterSubLine);
+const neededGradesRow = document.createElement('div');
+neededGradesRow.className = 'subject-semester-line needed-grades-row';
+neededGradesRow.id = 'neededGradesRow';
+neededGradesRow.innerHTML = `Exámenes: <strong>—</strong> <span style="color:#59636e">|</span> Evidencias: <strong>—</strong>`;
+sectionHeader.after(neededGradesRow);
 
 //-------------GOAL DISPLAY-------------
 const goalDisplay = document.createElement('div');
 goalDisplay.className = 'goal-display';
 goalDisplay.id = 'goalDisplay';
 goalDisplay.innerHTML = `
-<label class="goal-label"><i class="fa-solid fa-bullseye"></i> Meta</label>
+<div class="avg-display" id="avgDisplay">Calif. final: <strong id="avgValue">—</strong></div>
 <input type="number" id="goalInlineInput" class="goal-inline-input nombre" placeholder="70–100" min="70" max="100" step="1">
 <span class="goal-status" id="goalStatus"></span>`;
 sectionHeader.appendChild(goalDisplay);
@@ -317,10 +444,10 @@ const calcProjectedGrade = (assignments) => {
     const active = assignments.filter(a => a.weight > 0);
     const totalWeight = active.reduce((s, a) => s + a.weight, 0);
     if (!totalWeight) return null;
-    const gradedWeight   = active.filter(a => a.score !== null && a.score !== '').reduce((s, a) => s + a.weight, 0);
-    const ungradedWeight = totalWeight - gradedWeight;
-    const gradedSum      = active.filter(a => a.score !== null && a.score !== '').reduce((s, a) => s + (parseFloat(a.score) * a.weight), 0);
-    return (gradedSum + (0 * ungradedWeight)) / totalWeight;
+    const gradedSum = active
+        .filter(a => a.score !== null && a.score !== '')
+        .reduce((s, a) => s + (parseFloat(a.score) * a.weight), 0);
+    return gradedSum / totalWeight;
 };
 
 const calcRequiredScore = (assignments, goal) => {
@@ -328,9 +455,70 @@ const calcRequiredScore = (assignments, goal) => {
     const graded         = active.filter(a => a.score !== null && a.score !== '');
     const totalWeight    = active.reduce((s, a) => s + a.weight, 0);
     const ungradedWeight = totalWeight - graded.reduce((s, a) => s + a.weight, 0);
-    if (ungradedWeight <= 0) return null;
-    const gradedSum = graded.reduce((s, a) => s + (parseFloat(a.score) * a.weight), 0);
+    const gradedSum      = graded.reduce((s, a) => s + (parseFloat(a.score) * a.weight), 0);
+    if (ungradedWeight <= 0) {
+        const finalAvg = totalWeight > 0 ? gradedSum / totalWeight : 0;
+        return finalAvg >= goal ? null : -1;
+    }
     return ((goal * totalWeight) - gradedSum) / ungradedWeight;
+};
+
+const calcRequiredByGroup = (assignments, goal) => {
+    const exams = assignments.filter(a => a.isExam && a.weight > 0);
+    const acts  = assignments.filter(a => !a.isExam && a.weight > 0);
+
+    const totalWeight = assignments.filter(a => a.weight > 0).reduce((s, a) => s + a.weight, 0);
+    if (!totalWeight) return { exams: null, acts: null };
+
+    const gradedSum = assignments.filter(a => a.weight > 0 && a.score !== null && a.score !== '')
+        .reduce((s, a) => s + (parseFloat(a.score) * a.weight), 0);
+
+    const ungradedExams = exams.filter(a => a.score === null || a.score === '');
+    const ungradedActs  = acts.filter(a => a.score === null || a.score === '');
+
+    const ungradedExamWeight = ungradedExams.reduce((s, a) => s + a.weight, 0);
+    const ungradedActWeight  = ungradedActs.reduce((s, a) => s + a.weight, 0);
+
+    // Use overall current average as assumption for the other group
+    const gradedAssignments = assignments.filter(a => a.weight > 0 && a.score !== null && a.score !== '');
+    const gradedWeight = gradedAssignments.reduce((s, a) => s + a.weight, 0);
+    const overallAvg = gradedWeight > 0
+        ? gradedAssignments.reduce((s, a) => s + (parseFloat(a.score) * a.weight), 0) / gradedWeight
+        : 0;
+
+    let reqExams = null;
+    if (ungradedExamWeight > 0) {
+        const actsContribution = ungradedActWeight * overallAvg;
+        const needed = ((goal * totalWeight) - gradedSum - actsContribution) / ungradedExamWeight;
+        reqExams = needed;
+    } else {
+        const examSum = exams.reduce((s, a) => s + (a.score !== null && a.score !== '' ? parseFloat(a.score) * a.weight : 0), 0);
+        const examWeight = exams.reduce((s, a) => s + a.weight, 0);
+        reqExams = examWeight > 0 && (examSum / examWeight) >= goal ? null : -1;
+    }
+
+    let reqActs = null;
+    if (ungradedActWeight > 0) {
+        const examsContribution = ungradedExamWeight * overallAvg;
+        const needed = ((goal * totalWeight) - gradedSum - examsContribution) / ungradedActWeight;
+        reqActs = needed;
+    } else {
+        const actSum = acts.reduce((s, a) => s + (a.score !== null && a.score !== '' ? parseFloat(a.score) * a.weight : 0), 0);
+        const actWeight = acts.reduce((s, a) => s + a.weight, 0);
+        reqActs = actWeight > 0 && (actSum / actWeight) >= goal ? null : -1;
+    }
+
+    return { exams: reqExams, acts: reqActs };
+};
+
+const formatRequired = (val, hasRemaining) => {
+    if (!hasRemaining && val === null) return '✓ Completo';
+    if (!hasRemaining && val === -1)   return 'No alcanzada';
+    if (val === null) return '—';
+    if (val === -1)   return 'No alcanzada';
+    if (val > 100)    return 'Meta no alcanzable';
+    if (val <= 0)     return '¡Ya asegurada!';
+    return val.toFixed(1);
 };
 
 const calcSubmissionRate = (assignments) => {
@@ -363,22 +551,26 @@ const renderAssignments = () => {
         if (!items.length) return;
         tareasDiv.insertAdjacentHTML('beforeend', `<div class="hw-group-label">${label}</div>`);
         items.forEach(a => {
-            const i        = assignments.indexOf(a);
-            const hasScore = a.score !== null && a.score !== undefined && a.score !== '';
-            const scorePart = hasScore
-                ? `<span class="hw-score">${parseFloat(a.score).toFixed(1)}</span>`
-                : `<span class="hw-score pending">—</span>`;
+            const i = assignments.indexOf(a);
+            const hasGrade = a.score !== null && a.score !== undefined && a.score !== '';
+            const gradeVal = hasGrade ? parseFloat(a.score).toFixed(1) : '';
+            const pointsVal = hasGrade ? ((parseFloat(a.score) * a.weight) / 100).toFixed(1) : '';
             const sentPart = !a.isExam
                 ? `<button class="hw-sent-btn ${a.sent ? 'sent' : 'not-sent'}" data-index="${i}">
                     ${a.sent ? '<i class="fa-solid fa-check"></i> Entregada' : '<i class="fa-solid fa-xmark"></i> No entregada'}
-                  </button>`
+                </button>`
                 : '';
             tareasDiv.insertAdjacentHTML('beforeend', `
             <div class="hw-item" data-index="${i}">
                 <div class="hw-main">
                     <span class="hw-name">${a.name}</span>
                     <span class="hw-weight">${a.weight}%</span>
-                    ${scorePart}
+                    <div class="hw-grade-group">
+                        <input class="hw-grade-input nombre grade-input" data-index="${i}" type="number" min="0" max="100" step="0.1" placeholder="Calif." value="${gradeVal}">
+                        <span class="hw-grade-sep">/</span>
+                        <input class="hw-grade-input nombre points-input" data-index="${i}" type="number" min="0" max="${a.weight}" step="0.1" placeholder="Pts." value="${pointsVal}">
+                        <span class="hw-pts-label">de ${a.weight}</span>
+                    </div>
                     ${sentPart}
                 </div>
                 <div class="hw-actions">
@@ -418,7 +610,7 @@ tareasDiv.addEventListener('click', (e) => {
     const idx = parseInt(e.target.closest('[data-index]')?.dataset.index);
     if (isNaN(idx)) return;
     const data = getSubjectData();
-    const a    = data.assignments[idx];
+    const a = data.assignments[idx];
 
     if (e.target.closest('.deleteHW')) {
         showModal(() => {
@@ -432,26 +624,76 @@ tareasDiv.addEventListener('click', (e) => {
         <div class="hw-edit-row">
             <input class="nombre" type="text" value="${a.name}" id="editName_${idx}" placeholder="Nombre">
             <input class="nombre" type="number" value="${a.weight}" min="1" max="100" id="editWeight_${idx}" placeholder="% valor">
-            <input class="nombre" type="number" value="${a.score !== null ? a.score : ''}" min="0" max="100" step="0.1" placeholder="Calificación" id="editScore_${idx}">
             <button class="guardar confirmEdit" data-index="${idx}"><i class="fa-solid fa-check"></i></button>
-            <button class="guardar cancelEdit"  data-index="${idx}"><i class="fa-solid fa-xmark"></i></button>
+            <button class="guardar cancelEdit" data-index="${idx}"><i class="fa-solid fa-xmark"></i></button>
         </div>`;
 
         row.querySelector('.confirmEdit').addEventListener('click', () => {
             const newName   = document.getElementById(`editName_${idx}`).value.trim();
             const newWeight = parseFloat(document.getElementById(`editWeight_${idx}`).value);
-            const newScore  = document.getElementById(`editScore_${idx}`).value;
             if (!newName || isNaN(newWeight) || newWeight <= 0) return;
             const d2 = getSubjectData();
             const otherWeight = d2.assignments.reduce((s, x, i) => i !== idx && x.weight > 0 ? s + x.weight : s, 0);
             if (otherWeight + newWeight > 100) { alert(`El peso total excedería 100%. Tienes ${100 - otherWeight}% disponible.`); return; }
-            d2.assignments[idx] = { ...d2.assignments[idx], name: newName, weight: newWeight, score: newScore !== '' ? parseFloat(newScore) : null };
+            d2.assignments[idx] = { ...d2.assignments[idx], name: newName, weight: newWeight };
             saveSubjectData(d2);
             renderAssignments();
         });
 
         row.querySelector('.cancelEdit').addEventListener('click', renderAssignments);
     }
+});
+
+//-------------GRADE/POINTS LIVE INPUT-------------
+tareasDiv.addEventListener('input', (e) => {
+    const idx = parseInt(e.target.dataset.index);
+    if (isNaN(idx)) return;
+
+    const data = getSubjectData();
+    const a = data.assignments[idx];
+    const row = e.target.closest('.hw-item');
+    const gradeInput  = row.querySelector('.grade-input');
+    const pointsInput = row.querySelector('.points-input');
+
+    if (e.target.classList.contains('grade-input')) {
+        const grade = parseFloat(gradeInput.value);
+        if (gradeInput.value !== '' && !isNaN(grade) && grade >= 0 && grade <= 100) {
+            pointsInput.value = ((grade * a.weight) / 100).toFixed(1);
+            data.assignments[idx].score = grade;
+            if (!data.assignments[idx].sent && grade > 0) data.assignments[idx].sent = true;
+        } else if (gradeInput.value === '') {
+            pointsInput.value = '';
+            data.assignments[idx].score = null;
+        }
+    } else if (e.target.classList.contains('points-input')) {
+        const points = parseFloat(pointsInput.value);
+        if (!isNaN(points) && points > a.weight) { pointsInput.value = a.weight; return; }
+        if (pointsInput.value !== '' && !isNaN(points) && points >= 0 && points <= a.weight) {
+            const grade = (points / a.weight) * 100;
+            gradeInput.value = grade.toFixed(1);
+            data.assignments[idx].score = grade;
+            if (!data.assignments[idx].sent && points > 0) data.assignments[idx].sent = true;
+        } else if (pointsInput.value === '') {
+            gradeInput.value = '';
+            data.assignments[idx].score = null;
+        }
+    }
+
+    saveSubjectData(data);
+
+    const sentBtn = row.querySelector('.hw-sent-btn');
+    if (sentBtn) {
+        const sent = data.assignments[idx].sent;
+        sentBtn.className = `hw-sent-btn ${sent ? 'sent' : 'not-sent'}`;
+        sentBtn.innerHTML = sent
+            ? '<i class="fa-solid fa-check"></i> Entregada'
+            : '<i class="fa-solid fa-xmark"></i> No entregada';
+    }
+
+    renderGradeSummary(data);
+    renderGoalStatus(data);
+    renderWarnings(data);
+    updateSubjectInSemester(data);
 });
 
 //-------------GRADE SUMMARY-------------
@@ -462,35 +704,37 @@ const renderGradeSummary = (data) => {
     if (!active.length) { summary.innerHTML = ''; return; }
 
     const avg       = calcCurrentAverage(active);
+    const avgEl = document.getElementById('avgValue');
+    if (avgEl) avgEl.textContent = avg !== null ? avg.toFixed(1) : '—';
     const projected = calcProjectedGrade(active);
     const submRate  = calcSubmissionRate(data.assignments);
     const hasSecond = submRate >= 70;
     const acts      = data.assignments.filter(a => !a.isExam && a.weight > 0);
 
-    let goalHtml = '';
-    if (data.goal) {
-        const req = calcRequiredScore(active, data.goal);
-        if (req === null || req <= 0) {
-            goalHtml = `<div class="summary-item success">Meta ${data.goal}: <strong>¡Ya asegurada!</strong></div>`;
-        } else if (req > 100) {
-            goalHtml = `<div class="summary-item danger">Meta ${data.goal}: <strong>Ya no alcanzable</strong></div>`;
-        } else {
-            goalHtml = `<div class="summary-item info">Para meta ${data.goal} necesitas: <strong>${req.toFixed(1)}</strong> en lo que falta</div>`;
-        }
-    }
-
     const secondHtml = acts.length >= 3
         ? `<div class="summary-item ${hasSecond ? 'success' : 'danger'}">
-               2da oportunidad: <strong>${hasSecond ? 'Sí aplica' : `No aplica (${submRate.toFixed(0)}% entregado)`}</strong>
+               2da oportunidad: <strong>${hasSecond ? 'Sí aplica' : `Sin derecho (${submRate.toFixed(0)}% entregado)`}</strong>
            </div>` : '';
+
+    const goalStatusHtml = (() => {
+        if (!data.goal) return '';
+        const req = calcRequiredScore(active, data.goal);
+        let statusText = '';
+        let cls = '';
+        if (req === null)    { statusText = '¡Ya asegurada!';                           cls = 'success'; }
+        else if (req === -1) { statusText = 'No alcanzada';                              cls = 'danger';  }
+        else if (req > 100)  { statusText = 'Meta no alcanzable';                        cls = 'danger';  }
+        else if (req <= 0)   { statusText = '¡Ya asegurada!';                           cls = 'success'; }
+        else                 { statusText = `Necesitas ${req.toFixed(1)} en lo que falta`; cls = 'info'; }
+            return `<div class="summary-item ${cls}">Meta ${data.goal}: <strong>${statusText}</strong></div>`;
+        })();
 
     summary.innerHTML = `
     <div class="summary-grid">
-        <div class="summary-item">Promedio actual <strong>${avg !== null ? avg.toFixed(1) : '—'}</strong></div>
-        <div class="summary-item">Proyección mínima <strong>${projected !== null ? projected.toFixed(1) : '—'}</strong></div>
+        <div class="summary-item">Predicción final <strong>${projected !== null ? projected.toFixed(1) : '—'}</strong></div>
         <div class="summary-item">Evidencias entregadas <strong>${submRate.toFixed(0)}%</strong></div>
         ${secondHtml}
-        ${goalHtml}
+        ${goalStatusHtml}
     </div>`;
 };
 
@@ -501,29 +745,43 @@ const renderGoalStatus = (data) => {
     if (!input || !status) return;
     if (!data.goal) { input.value = ''; status.textContent = ''; return; }
     input.value = data.goal;
-    const req = calcRequiredScore(data.assignments.filter(a => a.weight > 0), data.goal);
-    if (req === null || req <= 0) {
-        status.textContent = '¡Meta asegurada!';
-        status.className = 'goal-status goal-ok';
-    } else if (req > 100) {
-        status.textContent = 'Meta perdida';
-        status.className = 'goal-status goal-lost';
-        if (!data.goalLost) {
-            const newGoal = prompt('Ya no puedes alcanzar tu meta. ¿Quieres establecer una nueva? (mínimo 70)');
-            const parsed = parseFloat(newGoal);
-            if (!isNaN(parsed) && parsed >= 70 && parsed <= 100) {
-                data.goal = parsed;
-                data.goalLost = false;
-                saveSubjectData(data);
-                input.value = parsed;
-            } else {
-                data.goalLost = true;
-                saveSubjectData(data);
-            }
-        }
-    } else {
-        status.textContent = `Necesitas ${req.toFixed(1)} en lo que resta`;
-        status.className = 'goal-status goal-warn';
+
+    const active = data.assignments.filter(a => a.weight > 0);
+    const { exams: reqExams, acts: reqActs } = calcRequiredByGroup(active, data.goal);
+
+    const examsUngraded = active.filter(a => a.isExam && (a.score === null || a.score === '')).length > 0;
+    const actsUngraded  = active.filter(a => !a.isExam && (a.score === null || a.score === '')).length > 0;
+
+    const examsStr = formatRequired(reqExams, examsUngraded);
+    const actsStr  = formatRequired(reqActs, actsUngraded);
+
+    const goalLost = (reqExams !== null && (reqExams > 100 || reqExams === -1)) || 
+                 (reqActs !== null && (reqActs > 100 || reqActs === -1));
+
+    if (goalLost && !data.goalLost) {
+        data.goal = 70;
+        data.goalLost = true;
+        saveSubjectData(data);
+        input.value = 70;
+
+        // Show custom warning modal
+        document.getElementById('goalWarningText').innerHTML =
+            `Necesitas:<br>Exámenes: <strong>${examsStr}</strong><br>Evidencias: <strong>${actsStr}</strong>`;
+        document.getElementById('goalWarningModal').classList.add('open');
+    }
+
+    status.textContent = goalLost
+        ? 'Meta ajustada a 70'
+        : '';
+    status.className = goalLost ? 'goal-status goal-lost' : 'goal-status goal-warn';
+
+    // Update needed grades row
+    const neededEl = document.getElementById('neededGradesRow');
+    if (neededEl) {
+        neededEl.innerHTML = `
+        Exámenes: <strong>${examsStr}</strong>
+        <span style="color:#59636e">|</span>
+        Evidencias: <strong>${actsStr}</strong>`;
     }
 };
 
@@ -548,7 +806,7 @@ const renderWarnings = (data) => {
     const graded    = active.filter(a => a.score !== null && a.score !== '');
     const messages  = [];
 
-    if (graded.length >= 3) {
+    if (graded.length >= 1) {
         const projected = calcProjectedGrade(active);
         const submRate  = calcSubmissionRate(data.assignments);
 
@@ -558,7 +816,13 @@ const renderWarnings = (data) => {
             messages.push(`warn|<i class="fa-solid fa-circle-exclamation"></i> Tu proyección (<strong>${projected.toFixed(1)}</strong>) está cerca del límite para aprobar.`);
         }
 
-        if (submRate < 70 && data.assignments.filter(a => !a.isExam && a.weight > 0).length >= 3) {
+        const examsTotal      = active.filter(a => a.isExam);
+        const examGradedW     = examsTotal.filter(a => a.score !== null && a.score !== '').reduce((s, a) => s + a.weight, 0);
+        const examTotalW      = examsTotal.reduce((s, a) => s + a.weight, 0);
+        const mostExamsGraded = examTotalW > 0 && (examGradedW / examTotalW) >= 0.9;
+
+        const acts2    = active.filter(a => !a.isExam);
+        if (mostExamsGraded && submRate < 70 && acts2.length >= 3) {
             messages.push(`warn|<i class="fa-solid fa-file-circle-xmark"></i> Solo has entregado el <strong>${submRate.toFixed(0)}%</strong> de evidencias. Sin llegar al 70% irás a tercera oportunidad.`);
         }
 
@@ -647,7 +911,7 @@ const warningBanner = document.createElement('div');
 warningBanner.className = 'grade-warning';
 warningBanner.id = 'warningBanner';
 warningBanner.style.display = 'none';
-semesterSubLine.after(warningBanner);
+neededGradesRow.after(warningBanner);
 
 //-------------INIT-------------
 renderAssignments();
