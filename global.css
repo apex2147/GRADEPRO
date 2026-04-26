@@ -16,7 +16,7 @@ button {
 }
 
 body {
-    background-color: #fff;
+    background-color: #0d0d0d;
     color: #fff;
     display: grid;
     grid-template-columns: 300px 1fr 1fr 400px;
