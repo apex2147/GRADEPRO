@@ -99,8 +99,10 @@
             </div>
         </footer> 
         <script>
-        document.getElementById('demoBtn').addEventListener('click', () => {
+        document.getElementById('demoBtn').addEventListener('click', (e) => {
+            e.preventDefault();
             localStorage.setItem('session', JSON.stringify({ name: 'Invitado', email: 'demo@gradepro.mx' }));
+            window.location.href = 'UserPage.html';
         });
         </script>
     </body>
