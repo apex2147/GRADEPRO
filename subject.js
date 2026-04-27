@@ -1,6 +1,18 @@
+//-------------SESSION-------------
+const session = JSON.parse(localStorage.getItem('session') || 'null');
+if (!session) { window.location.href = 'register.html'; }
+const userName = session?.name || 'Usuario';
+const userEl = document.getElementById('usuario');
+if (userEl) userEl.textContent = userName;
+document.getElementById('cerrarSesion')?.addEventListener('click', () => {
+    localStorage.removeItem('session');
+    window.location.href = 'index.html';
+});
+
 function navigateTo(url) {
     window.location.href = url;
 }
+
 //-------------CALENDARIO-------------
 const monthYeartElement = document.getElementById('monthYear');
 const datesElement = document.getElementById('dates');

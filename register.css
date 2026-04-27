@@ -1,0 +1,120 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.index-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+}
+
+.index-card {
+    background-color: rgba(20,20,20,0.97);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 2em;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.index-card h2 {
+    color: #F5C518;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.index-card p {
+    color: #8f8f8f;
+    font-size: 0.9em;
+}
+
+.index-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.index-buttons button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(245,197,24,0.2);
+    background-color: rgba(245,197,24,0.12);
+    color: #F5C518;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 150ms;
+}
+
+.index-buttons button:hover {
+    background-color: #F5C518;
+    color: #0d0d0d;
+}
+
+.index-buttons button.secondary {
+    background-color: transparent;
+    border-color: rgba(255,255,255,0.1);
+    color: #8f8f8f;
+}
+
+.index-buttons button.secondary:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auth-form h3 {
+    color: #F5C518;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.auth-form .nombre {
+    width: 100%;
+    padding: 10px 12px;
+}
+
+.auth-form button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #F5C518;
+    color: #0d0d0d;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 150ms;
+}
+
+.auth-form button:hover { background-color: #d4aa10; }
+
+.auth-error {
+    color: #DC143C;
+    font-size: 12px;
+    min-height: 16px;
+}
+
+.auth-switch {
+    font-size: 12px;
+    color: #8f8f8f;
+    text-align: center;
+}
+
+.auth-switch a {
+    color: #F5C518;
+    cursor: pointer;
+}
+
+.auth-switch a:hover { text-decoration: underline; }

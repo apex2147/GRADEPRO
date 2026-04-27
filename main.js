@@ -1,3 +1,14 @@
+//-------------SESSION-------------
+const session = JSON.parse(localStorage.getItem('session') || 'null');
+if (!session) { window.location.href = 'register.html'; }
+const userName = session?.name || 'Usuario';
+const userEl = document.getElementById('usuario');
+if (userEl) userEl.textContent = userName;
+document.getElementById('cerrarSesion')?.addEventListener('click', () => {
+    localStorage.removeItem('session');
+    window.location.href = 'index.html';
+});
+
 function navigateTo(url) {
     window.location.href = url;
 }
@@ -255,6 +266,7 @@ const loadSemesterView = (name) => {
     mainTitle.textContent = name;
     updateSubjectForm();
     loadSubjects();
+    renderSemesterAverages();
 }
 
 const resetView = () => {
@@ -290,6 +302,28 @@ const loadSemesters = () => {
     });
     sortSemesters();
     updateActual();
+    renderSemesterAverages();
+}
+
+const renderSemesterAverages = () => {
+    document.querySelectorAll('.cursados .container').forEach(container => {
+        const link = container.querySelector('a');
+        if (!link) return;
+        const semName = link.textContent.trim();
+        const subjects = JSON.parse(localStorage.getItem(`subjects_${semName}`)) || [];
+        const graded = subjects.filter(s => s.currentAvg !== null && s.currentAvg !== undefined);
+        const avg = graded.length
+            ? (graded.reduce((s, sub) => s + sub.currentAvg, 0) / graded.length).toFixed(1)
+            : null;
+
+        let avgEl = container.querySelector('.sem-avg');
+        if (!avgEl) {
+            avgEl = document.createElement('span');
+            avgEl.className = 'sem-avg';
+            link.after(avgEl);
+        }
+        avgEl.textContent = avg !== null ? avg : '';
+    });
 }
 
 const addSemester = () => {
@@ -592,3 +626,4 @@ if (semesters.length === 0) {
 }
 
 updateSubjectForm();
+renderSemesterAverages();

@@ -43,7 +43,7 @@
                             <div class="gratis">
                                 <h3>Prueba gratis</h3>
                                 <p>Ingrese y calcule su promedio de su materia o semestre</p>
-                                <a href="#"><i class="fa-solid fa-calculator"></i></a>
+                                <a href="UserPage.html" id="demoBtn"><i class="fa-solid fa-calculator"></i></a>
                             </div>
                         </div>
                         <div class="parte2">
@@ -98,5 +98,10 @@
                 </div>
             </div>
         </footer> 
+        <script>
+        document.getElementById('demoBtn').addEventListener('click', () => {
+            localStorage.setItem('session', JSON.stringify({ name: 'Invitado', email: 'demo@gradepro.mx' }));
+        });
+        </script>
     </body>
 </html>

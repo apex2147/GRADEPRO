@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GRADEPRO</title>
+        <link rel="stylesheet" href="global.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="register.css">
+        <script src="https://kit.fontawesome.com/80e6568496.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header>
+            <h1 class="title">GRADEPRO</h1>
+        </header>
+        <main class="index-main">
+            <div class="index-card">
+                <h2>Bienvenido</h2>
+                <p>Gestiona tu rendimiento académico</p>
+                <div class="index-buttons">
+                    <button id="showLogin">Iniciar Sesión</button>
+                    <button id="showRegister" class="secondary">Registrarse</button>
+                </div>
+                <form id="loginForm" class="auth-form" style="display:none" autocomplete="off">
+                    <h3>Iniciar Sesión</h3>
+                    <input type="email" id="loginEmail" class="nombre" placeholder="Correo electrónico">
+                    <input type="password" id="loginPassword" class="nombre" placeholder="Contraseña">
+                    <span class="auth-error" id="loginError"></span>
+                    <button type="button" id="loginBtn">Entrar</button>
+                    <p class="auth-switch">¿No tienes cuenta? <a href="#" id="switchToRegister">Regístrate</a></p>
+                </form>
+                <form id="registerForm" class="auth-form" style="display:none" autocomplete="off">
+                    <h3>Registrarse</h3>
+                    <input type="text" id="regName" class="nombre" placeholder="Nombre completo">
+                    <input type="email" id="regEmail" class="nombre" placeholder="Correo electrónico">
+                    <input type="password" id="regPassword" class="nombre" placeholder="Contraseña">
+                    <input type="password" id="regPasswordConfirm" class="nombre" placeholder="Confirmar contraseña">
+                    <span class="auth-error" id="registerError"></span>
+                    <button type="button" id="registerBtn">Crear cuenta</button>
+                    <p class="auth-switch">¿Ya tienes cuenta? <a href="#" id="switchToLogin">Inicia sesión</a></p>
+                </form>
+            </div>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>GRADEPRO</h4>
+                    <p>Plataforma de gestión académica</p>
+                </div>
+                <div class="footer-copy">
+                    <p>© 2026 GRADEPRO. Todos los derechos reservados.</p>
+                    <p>Obra colectiva registrada ante el <strong>INDAUTOR</strong>. Imagen comercial protegida ante el <strong>IMPI</strong>.</p>
+                    <p>Desarrollado por el equipo GRADEPRO — Monterrey, Nuevo León, México</p>
+                </div>
+            </div>
+        </footer>
+        <script src="register.js"></script>
+    </body>
+</html>
